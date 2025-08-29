@@ -1,0 +1,41 @@
+name: Deploy static site to AWS
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  id-token: write   # нужно для OIDC
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "deploy-site"
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync site to S3
+        run: |
+          aws s3 sync site/ "s3://${{ vars.S3 }}/" \
+            --delete \
+            --exclude ".DS_Store" \
+            --cache-control "public, max-age=31536000"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT }}" \
+            --paths "/*"
