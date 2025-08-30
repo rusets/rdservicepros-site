@@ -3,6 +3,7 @@ name: Deploy static site to AWS
 on:
   push:
     branches: [ "main" ]
+    workflow_dispatch: {}
 
 permissions:
   id-token: write   # нужно для OIDC
