@@ -2,8 +2,7 @@ name: Deploy static site to AWS
 
 on:
   push:
-    branches: [ "main" ]
-    workflow_dispatch: {}
+    branches: ["main"]
 
 permissions:
   id-token: write   # нужно для OIDC
@@ -15,12 +14,14 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    concurrency:
-      group: "deploy-site"
-      cancel-in-progress: true
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Who am I?
+        run: aws sts get-caller-identity
+
+      - name: Debug bucket
+        run: echo "Deploying to ${{ vars.S3 }}"
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
@@ -29,14 +30,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Sync site to S3
-        run: |
-          aws s3 sync site/ "s3://${{ vars.S3 }}/" \
-            --delete \
-            --exclude ".DS_Store" \
-            --cache-control "public, max-age=31536000"
+        run: aws s3 sync site/ "s3://${{ vars.S3 }}/" --delete --exclude ".DS_Store"
 
       - name: Invalidate CloudFront cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id "${{ vars.CLOUDFRONT }}" \
-            --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT }} --paths "/*"
