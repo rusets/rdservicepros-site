@@ -1,0 +1,63 @@
+name: Deploy static site to AWS
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write     # нужно для OIDC
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "deploy-static-site"
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # СНАЧАЛА настраиваем креды через OIDC
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Отладка — кто мы и в какой бакет пойдём
+      - name: Who am I?
+        run: aws sts get-caller-identity
+
+      - name: Debug bucket
+        run: echo "Deploying to ${{ vars.S3 }}"
+
+      # Деплой ТОЛЬКО содержимого папки site/
+      # 1) долгая статика с большим кэшем
+      - name: Sync assets (long cache)
+        run: |
+          aws s3 sync site/ "s3://${{ vars.S3 }}/" \
+            --delete \
+            --exclude ".DS_Store" \
+            --exclude "index.html" \
+            --cache-control "public, max-age=31536000"
+
+      # 2) HTML с коротким кэшем, чтобы правки были видны сразу
+      - name: Sync HTML (short cache)
+        run: |
+          aws s3 cp site/index.html "s3://${{ vars.S3 }}/index.html" \
+            --cache-control "public, max-age=60" \
+            --content-type "text/html"
+
+      # Обновляем CloudFront
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT }}" \
+            --paths "/*"
+
