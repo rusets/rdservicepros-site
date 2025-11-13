@@ -51,8 +51,7 @@ graph TD
 - **Smooth Scrolling:** CSS-driven page transitions for better UX  
 - **OpenStreetMap Integration:** Secure, keyless map centered on Navarre, FL  
 - **SEO & Social Meta Tags:** OG + canonical tags for better visibility  
-- **Clean Repo:** No Mobirise leftovers, one clean commit history  
-- **Commented Code:** English section comments throughout `index.html`  
+ - **Commented Code:** English section comments throughout `index.html`  
 - **Accessibility Ready:** All images have descriptive `alt` tags  
 
 ---
@@ -96,7 +95,6 @@ rdservicepros-site/
 - Full AWS static hosting pipeline built with **Terraform**  
 - Infrastructure as Code + security best practices (no secrets, IAM roles)  
 - Responsive web design principles applied to real business site  
-- Migrated from legacy Mobirise → modern clean HTML5/Bootstrap base  
 
 ---
 
@@ -104,7 +102,6 @@ rdservicepros-site/
 
 **Ruslan Dashkin**  
 DevOps & Cloud Engineer | Founder @ RD Service Pros  
-📧 [rdservicepros9@gmail.com](mailto:rdservicepros9@gmail.com)  
 🌐 [www.rdservicepros.com](https://rdservicepros.com)
 
 ---
