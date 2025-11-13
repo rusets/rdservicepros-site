@@ -1,11 +1,34 @@
+# -----------------------------------------
 # Terraform
+# -----------------------------------------
 .terraform/
-*.tfstate
-*.tfstate.*
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+tfplan
 crash.log
+crash.*.log
+
+# Optional override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-.terraform.lock.hcl
 
+<<<<<<< HEAD
+=======
+# Sensitive variables
+*.tfvars
+*.tfvars.json
+
+# -----------------------------------------
+# macOS
+# -----------------------------------------
+.DS_Store
+
+# -----------------------------------------
+# IDE
+# -----------------------------------------
+.vscode/
+.idea/
+>>>>>>> 7bf32c4 (Clean repo: remove DS_Store and tfplan from tracking)
