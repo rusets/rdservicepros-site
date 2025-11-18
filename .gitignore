@@ -15,8 +15,6 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-<<<<<<< HEAD
-=======
 # Sensitive variables
 *.tfvars
 *.tfvars.json
@@ -31,4 +29,3 @@ override.tf.json
 # -----------------------------------------
 .vscode/
 .idea/
->>>>>>> 7bf32c4 (Clean repo: remove DS_Store and tfplan from tracking)
