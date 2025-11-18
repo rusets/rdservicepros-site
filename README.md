@@ -118,22 +118,30 @@ graph TD
 ```
 
 ## 📁 Project Structure
+
 ```
-    rdservicepros-site/
-    ├── docs
-    │   └── screenshots/
-    ├── infra/
-    │   └── terraform/
-    │       ├── providers.tf
-    │       ├── variables.tf
-    │       ├── main.tf
-    │       ├── outputs.tf
-    │       └── ...
-    ├── site/
-    │   ├── assets/
-    │   ├── index.html
-    │   └── ...
-    └── README.md
+rdservicepros-site/
+├── docs/
+│   └── screenshots/
+│       ├── 1-frontend-home.png
+│       └── ... 
+├── infra/
+│   └── terraform/
+│       ├── providers.tf
+│       ├── variables.tf
+│       ├── main.tf
+│       ├── outputs.tf
+│
+├── site/
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── js/
+│   │   ├── images/
+│   │   └── ...
+│   ├── index.html
+│   └── ...
+│
+└── README.md
 ```
 
 ## ⚙️ How to Deploy (CI/CD or Manual)
