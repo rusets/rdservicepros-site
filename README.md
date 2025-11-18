@@ -83,21 +83,19 @@ This static hosting setup is tuned for **fast global delivery** and
 
 ## 📊 Architecture Diagram (Mermaid)
 
-``` mermaid
+```mermaid
 graph TD
-    A[User Browser 🌐] -->|HTTPS| B[CloudFront CDN]
-    B -->|Origin Request| C[S3 Bucket (Private)]
-    B -->|DNS Lookup| D[Route53 Hosted Zone]
-
-    subgraph CI/CD
-        E[GitHub Actions] -->|OIDC AssumeRole| F[IAM Role]
-        E -->|Sync static files| C
-        E -->|Invalidate cache| B
-    end
-
+    A[User Browser 🌐] -->|HTTPS Request| B[CloudFront CDN]
+    B -->|Fetches Content| C[S3 Static Website Bucket]
+    B -->|DNS Resolution| D[Route53 Hosted Zone]
+    E[GitHub Actions ⚙️] -->|Deploy via OIDC| C
     subgraph AWS Cloud
-        C --> B
+        C -->|Content| B
         D --> B
+    end
+    subgraph CI/CD
+        F[Terraform IaC] --> C
+        F --> B
     end
 ```
 
@@ -108,13 +106,13 @@ rdservicepros-site/
 ├── docs/
 │   └── screenshots/
 │       ├── 1-frontend-home.png
-│       └── ... 
+│       └── ...
 ├── infra/
 │   └── terraform/
 │       ├── providers.tf
 │       ├── variables.tf
 │       ├── main.tf
-│       ├── outputs.tf
+│       └── outputs.tf
 │
 ├── site/
 │   ├── assets/
@@ -167,7 +165,9 @@ Registrar NS did not match newly created Route53 hosted zone.
 
 -   Always verify hosted zone → registrar sync\
 -   CloudFront TLS depends on correct DNS\
--   Use `dig` and Cloudflare DNS for validation
+-   DNS validation using public recursive resolvers:
+-   Google DNS (8.8.8.8) — authoritative and successful
+-   Cloudflare DNS (1.1.1.1) — may be filtered by local ISP/WiFi networks
 
 ## 🔍 Highlights & Engineering Decisions
 
@@ -187,7 +187,62 @@ Registrar NS did not match newly created Route53 hosted zone.
 -   Real-world DNS debugging\
 -   Clean Terraform architecture
 
-## 🧾 License & Branding
+## Screenshots
 
-MIT License.\
-"Ruslan AWS 🚀" branding is protected.
+### 1. Customer-facing home page
+
+This screenshot shows the public RD Service Pros website as delivered through CloudFront.  
+It demonstrates the final look-and-feel of the static site: branding, layout, navigation menu, and main call-to-action for customers.
+
+![Home Page](docs/screenshots/1-frontend-home.png)
+
+---
+
+### 2. CloudFront distribution configuration
+
+This view shows the CloudFront distribution that serves the static site.  
+You can see the custom domain names (`rdservicepros.com` and `www.rdservicepros.com`), attached ACM certificate, default root object, and general settings used for the CDN.
+
+![CloudFront Distribution](docs/screenshots/2-cloudfront-general.png)
+
+---
+
+### 3. S3 bucket permissions (private origin)
+
+This screenshot highlights the S3 bucket permissions for `rdservicepros-site`.  
+Public access is fully blocked and the bucket policy only allows access from CloudFront via Origin Access Control (OAC), so the website is not directly exposed from S3.
+
+![S3 Permissions](docs/screenshots/3-s3-permissions.png)
+
+---
+
+### 4. S3 bucket objects (static site contents)
+
+Here you can see the actual website assets stored in S3.  
+The bucket hosts `index.html` and an `assets/` folder with CSS, JavaScript, and images that are synchronized from the `site/` directory using the GitHub Actions workflow.
+
+![S3 Objects](docs/screenshots/4-s3-objects.png)
+
+---
+
+### 5. GitHub Actions deploy workflow
+
+This screenshot shows a successful run of the “Deploy static site to AWS” GitHub Actions workflow.  
+The pipeline authenticates to AWS via OIDC, syncs static assets to S3 with different cache policies, and triggers a CloudFront cache invalidation so new content becomes visible quickly.
+
+![GitHub Actions Deploy](docs/screenshots/5-github-actions-deploy.png)
+
+---
+
+### 6. DNS and CloudFront resolution
+
+The final screenshot demonstrates DNS resolution for `rdservicepros.com` using `dig` against Google Public DNS (`8.8.8.8`).  
+It confirms that the apex domain correctly resolves to the CloudFront IPs, proving that Route 53 and CloudFront are wired together as expected.
+
+![DNS DIG](docs/screenshots/6-dns-dig-google.png)
+
+## 🧾 License
+
+Released under the **MIT License**   
+© Ruslan Dashkin (🚀Ruslan AWS)
+Branding name “🚀Ruslan AWS” and related visuals are protected; commercial reuse or rebranding without permission is prohibited.
