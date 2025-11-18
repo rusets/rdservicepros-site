@@ -20,33 +20,17 @@ real incident resolution.
 Built using **AWS S3 + CloudFront**, with DNS routed through
 **Route53**, and deployed via **GitHub Actions OIDC** (no access keys).
 
-## 🏗️ Tech Stack Overview
+## ⚙️ Tech Stack Overview
 
-  -----------------------------------------------------------------------
-  Layer            Technology                     Purpose
-  ---------------- ------------------------------ -----------------------
-  **Frontend**     HTML5, Bootstrap 5, Vanilla JS Responsive,
-                                                  production-ready static
-                                                  site
-
-  **Hosting**      S3 (private)                   Secure static content
-                                                  origin
-
-  **CDN**          CloudFront (OAC)               HTTPS, edge caching,
-                                                  compression
-
-  **DNS**          Route53                        Apex + www A-aliases,
-                                                  ACM DNS validation
-
-  **Security**     OIDC, IAM Roles                Zero access keys, least
-                                                  privilege
-
-  **IaC**          Terraform                      Full provisioning and
-                                                  configuration
-
-  **CI/CD**        GitHub Actions                 Automated deploy +
-                                                  invalidation
-  -----------------------------------------------------------------------
+| Layer       | Technology                 | Purpose                                                           |
+|-------------|----------------------------|-------------------------------------------------------------------|
+| Frontend    | HTML5, Bootstrap 5, JS     | Responsive, production-ready static site                          |
+| Hosting     | S3 (private)               | Secure static content origin                                      |
+| CDN         | CloudFront (OAC)           | HTTPS delivery, edge caching, compression                         |
+| DNS         | Route53                    | Apex + www A-aliases, ACM DNS validation                          |
+| Security    | IAM Roles + OIDC           | GitHub Actions assumes an IAM role — no long-lived AWS keys used |
+| IaC         | Terraform                  | Full infrastructure provisioning and configuration                 |
+| CI/CD       | GitHub Actions             | Automated deploy + CloudFront invalidation                        |
 
 ## 🏆 Production-Grade Features
 
