@@ -118,8 +118,10 @@ graph TD
 ```
 
 ## 📁 Project Structure
-
+```
     rdservicepros-site/
+    ├── docs
+    │   └── screenshots/
     ├── infra/
     │   └── terraform/
     │       ├── providers.tf
@@ -132,6 +134,7 @@ graph TD
     │   ├── index.html
     │   └── ...
     └── README.md
+```
 
 ## ⚙️ How to Deploy (CI/CD or Manual)
 
