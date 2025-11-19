@@ -243,6 +243,6 @@ It confirms that the apex domain correctly resolves to the CloudFront IPs, provi
 
 ## 🧾 License
 
-Released under the **MIT License**   
-© Ruslan Dashkin (🚀Ruslan AWS)
-Branding name “🚀Ruslan AWS” and related visuals are protected; commercial reuse or rebranding without permission is prohibited.
+- Released under the **MIT License** — free to use, modify, and learn from.
+- © Ruslan Dashkin (“🚀 Ruslan AWS”).
+- The “🚀 Ruslan AWS” branding and all related visuals are protected; commercial reuse or rebranding is prohibited without permission.
