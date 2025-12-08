@@ -19,6 +19,3 @@ output "route53_nameservers" {
   value = aws_route53_zone.primary.name_servers
 }
 
-output "gha_deploy_role_arn" {
-  value = aws_iam_role.gha_deploy.arn
-}

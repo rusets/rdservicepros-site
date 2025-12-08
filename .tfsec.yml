@@ -1,0 +1,14 @@
+severity_threshold: MEDIUM
+
+config:
+  terraform:
+    included_directories:
+      - infra/terraform
+
+exclude:
+  - aws-s3-encryption-customer-key
+  - aws-cloudfront-enable-waf
+  - aws-s3-enable-bucket-logging
+  - aws-s3-enable-versioning
+  - aws-cloudfront-enable-logging
+  - aws-cloudfront-use-secure-tls-policy

@@ -32,6 +32,24 @@ jobs:
       - name: Who am I?
         run: aws sts get-caller-identity
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        run: terraform init -input=false
+
+      - name: Terraform plan
+        working-directory: infra/terraform
+        run: terraform plan -input=false
+
+      - name: Terraform apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: infra/terraform
+        run: terraform apply -input=false -auto-approve
+
       - name: Debug bucket
         run: echo "Deploying to ${{ vars.S3 }}"
 

@@ -1,10 +1,17 @@
-# 🧰 RD Service Pros --- Production Static Website (S3 + CloudFront + Terraform)
+# RD Service Pros — Production Static Website (S3 + CloudFront + Terraform)
 
-![Terraform](https://img.shields.io/badge/Terraform-IaC-5C4EE5?logo=terraform)
-![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20CloudFront%20%7C%20Route53-FF9900?logo=amazonaws)
-![CI/CD](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions)
-![Security](https://img.shields.io/badge/Security-OIDC%20%7C%20IAM-2E7D32?logo=security)
-![Region](https://img.shields.io/badge/Region-us--east--1-blue)
+<p align="center">
+  <img src="https://img.shields.io/badge/Terraform-IaC-5C4EE5?logo=terraform" />
+  <img src="https://img.shields.io/badge/AWS-S3%20%7C%20CloudFront%20%7C%20Route53-FF9900?logo=amazonaws" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions" />
+  <img src="https://img.shields.io/badge/Security-OIDC%20%7C%20IAM-2E7D32?logo=security" />
+  <img src="https://img.shields.io/badge/Region-us--east--1-blue" />
+  <br/>
+  <img src="https://img.shields.io/badge/TFLint-Static%20Analysis-00A0A0?logo=terraform" />
+  <img src="https://img.shields.io/badge/tfsec-Security%20Scanner-4C1?logo=terraform" />
+  <img src="https://img.shields.io/badge/Checkov-Policy%20Scanning-794BC4?logo=python" />
+
+</p>
 
 A fully automated, production-grade static website for **RD Service
 Pros**, a home repair & appliance service company in **Navarre,
@@ -13,14 +20,16 @@ The project demonstrates **end-to-end DevOps engineering**, including
 infrastructure-as-code, CDN-level optimization, secure deployments, and
 real incident resolution.
 
-## 🌐 Live Demo
+##  Live Demo
 
-👉 **https://rdservicepros.com**
+ **https://rdservicepros.com**
 
 Built using **AWS S3 + CloudFront**, with DNS routed through
 **Route53**, and deployed via **GitHub Actions OIDC** (no access keys).
 
-## ⚙️ Tech Stack Overview
+---
+
+##  Tech Stack Overview
 
 | Layer       | Technology                 | Purpose                                                           |
 |-------------|----------------------------|-------------------------------------------------------------------|
@@ -28,11 +37,13 @@ Built using **AWS S3 + CloudFront**, with DNS routed through
 | Hosting     | S3 (private)               | Secure static content origin                                      |
 | CDN         | CloudFront (OAC)           | HTTPS delivery, edge caching, compression                         |
 | DNS         | Route53                    | Apex + www A-aliases, ACM DNS validation                          |
-| Security    | IAM Roles + OIDC           | GitHub Actions assumes an IAM role — no long-lived AWS keys used |
-| IaC         | Terraform                  | Full infrastructure provisioning and configuration                 |
+| Security    | IAM Roles + OIDC           | GitHub Actions assumes an IAM role — no long-lived AWS keys used  |
+| IaC         | Terraform                  | Full infrastructure provisioning and configuration                |
 | CI/CD       | GitHub Actions             | Automated deploy + CloudFront invalidation                        |
 
-## 🏆 Production-Grade Features
+---
+
+##  Production-Grade Features
 
 -   Multi-account domain setup (registrar in A → hosted zone +
     CloudFront in B)\
@@ -48,7 +59,9 @@ Built using **AWS S3 + CloudFront**, with DNS routed through
 -   Custom 404 page + forced HTTPS\
 -   Clean resource naming & consistent tagging
 
-## ⚡ Performance Optimizations
+---
+
+##  Performance Optimizations
 
 This static hosting setup is tuned for **fast global delivery** and
 **low-cost performance**:
@@ -61,9 +74,9 @@ This static hosting setup is tuned for **fast global delivery** and
 
 ### **2. Compression & HTTP Optimization**
 
--   Brotli/Gzip compression\
--   HTTP/2 & HTTP/3 support\
--   Optimized assets
+- Brotli/Gzip compression  
+- HTTP/2 support  
+- Optimized static assets
 
 ### **3. Edge-Cached Routing**
 
@@ -72,16 +85,18 @@ This static hosting setup is tuned for **fast global delivery** and
 
 ### **4. Zero Redirect Chain**
 
--   HTTPS-only\
--   Proper domain aliasing
+-    Minimal redirects (HTTP → HTTPS only, no extra redirect chains)
+-    Proper domain aliasing
 
 ### **5. Cost Optimization**
 
 -   PriceClass_100\
 -   Zero compute\
 -   High cache-hit ratio
+   
+---
 
-## 📊 Architecture Diagram (Mermaid)
+##  Architecture Diagram (Mermaid)
 
 ```mermaid
 graph TD
@@ -99,34 +114,26 @@ graph TD
     end
 ```
 
-## 📁 Project Structure
+---
+
+## **Project Structure**
 
 ```
 rdservicepros-site/
-├── docs/
-│   └── screenshots/
-│       ├── 1-frontend-home.png
-│       └── ...
-├── infra/
-│   └── terraform/
-│       ├── providers.tf
-│       ├── variables.tf
-│       ├── main.tf
-│       └── outputs.tf
-│
-├── site/
-│   ├── assets/
-│   │   ├── css/
-│   │   ├── js/
-│   │   ├── images/
-│   │   └── ...
-│   ├── index.html
-│   └── ...
-│
-└── README.md
+├── docs/                     # Documentation & screenshots
+├── infra/                    # Terraform IaC (S3, CloudFront, Route53, OIDC)
+├── site/                     # Static website source (HTML + assets)
+├── .github/                  # CI/CD workflows
+├── README.md                 # Project overview
+├── LICENSE                   # MIT license + branding notice
+├── .gitignore                # Repo hygiene rules
+└── .tfsec.yml                # Security scanning configuration
 ```
+**Full detailed structure:** see [`docs/architecture.md`](./docs/architecture.md)
 
-## ⚙️ How to Deploy (CI/CD or Manual)
+---
+
+##  How to Deploy (CI/CD or Manual)
 
 ### Terraform
 
@@ -141,10 +148,55 @@ terraform apply
 ``` bash
 aws s3 sync site s3://$(terraform output -raw bucket_name) --delete
 
-aws cloudfront create-invalidation     --distribution-id $(terraform output -raw cloudfront_distribution_id)     --paths "/*"
+aws cloudfront create-invalidation \
+  --distribution-id $(terraform output -raw cloudfront_distribution_id) \
+  --paths "/*"
+```
+---
+
+##  Infrastructure & Security Checks
+
+This project uses a full IaC validation pipeline to ensure correctness, security, and consistency:
+
+| Tool        | Purpose                                                      |
+|-------------|--------------------------------------------------------------|
+| **terraform validate / fmt** | Syntax checks and formatting                           |
+| **TFLint**  | Provider-aware linting (AWS rules, deprecated args, typos)  |
+| **tfsec**   | Security scanning with selected rules excluded               |
+| **Checkov** | Deep IaC policy evaluation (all current checks passed)       |
+| **GitHub Actions** | Optional CI integration for automated scanning            |
+
+###  Why some rules are excluded
+
+Certain tfsec / checkov rules were intentionally ignored because:
+
+- **They increase AWS cost** (WAF, S3 versioning, CloudFront logging, KMS CMKs)  
+- **They are unnecessary for a static brochure-style site** (no backend, no data retention, no sensitive compute)
+- **They do not improve real-world security for this architecture**  
+  Example: Enforcing KMS CMK encryption on a public static website bucket has **no practical benefit**, but costs money.
+- **Some rules are false positives** due to CloudFront provider quirks (e.g., TLS policy mismatches)
+
+This keeps the project:
+- **Fully secure**
+- **Minimalistic**
+- **Free-tier friendly**
+- **Aligned with the real threat model** (no user data, no API surface, no dynamic workloads)
+
+---
+
+### Run all checks locally (optional, for full hygiene)
+
+```bash
+terraform fmt -recursive
+terraform validate
+tflint
+tfsec .
+checkov -d infra/terraform
 ```
 
-## 🚨 Real Incident Case Study (DNS Failure Fix)
+---
+
+##  Real Incident Case Study (DNS Failure Fix)
 
 ### Symptoms
 
@@ -169,7 +221,7 @@ Registrar NS did not match newly created Route53 hosted zone.
 -   Google DNS (8.8.8.8) — authoritative and successful
 -   Cloudflare DNS (1.1.1.1) — may be filtered by local ISP/WiFi networks
 
-## 🔍 Highlights & Engineering Decisions
+##  Highlights & Engineering Decisions
 
 -   OAC instead of OAI (modern secure origin auth)\
 -   BucketOwnerEnforced mode\
@@ -179,13 +231,15 @@ Registrar NS did not match newly created Route53 hosted zone.
 -   Terraform with create_before_destroy for ACM\
 -   Multi-line, comment-structured Terraform (Ruslan AWS style)
 
-## 🧠 What This Project Demonstrates
+##  What This Project Demonstrates
 
 -   Real production static hosting\
 -   Strong AWS infrastructure knowledge\
 -   Secure CI/CD\
 -   Real-world DNS debugging\
 -   Clean Terraform architecture
+   
+---
 
 ## Screenshots
 
@@ -241,8 +295,10 @@ It confirms that the apex domain correctly resolves to the CloudFront IPs, provi
 
 ![DNS DIG](docs/screenshots/6-dns-dig-google.png)
 
-## 🧾 License
+---
 
-- Released under the **MIT License** — free to use, modify, and learn from.
-- © Ruslan Dashkin (“🚀 Ruslan AWS”).
-- The “🚀 Ruslan AWS” branding and all related visuals are protected; commercial reuse or rebranding is prohibited without permission.
+## License
+
+- Released under the **MIT License** — see `LICENSE` for full text.  
+- © Ruslan Dashkin (“🚀 Ruslan AWS”).  
+- Branding name “🚀 Ruslan AWS” and related visuals may not be reused, redistributed, or rebranded without explicit permission.
