@@ -4,28 +4,29 @@
   <img src="https://img.shields.io/badge/Terraform-IaC-5C4EE5?logo=terraform" />
   <img src="https://img.shields.io/badge/AWS-S3%20%7C%20CloudFront%20%7C%20Route53-FF9900?logo=amazonaws" />
   <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions" />
-  <img src="https://img.shields.io/badge/Security-OIDC%20%7C%20IAM-2E7D32?logo=security" />
-  <img src="https://img.shields.io/badge/Region-us--east--1-blue" />
-  <br/>
-  <img src="https://img.shields.io/badge/TFLint-Static%20Analysis-00A0A0?logo=terraform" />
-  <img src="https://img.shields.io/badge/tfsec-Security%20Scanner-4C1?logo=terraform" />
-  <img src="https://img.shields.io/badge/Checkov-Policy%20Scanning-794BC4?logo=python" />
-
+  <img src="https://img.shields.io/badge/Security-OIDC%20%7C%20IAM-2E7D32" />
+  <img src="https://img.shields.io/badge/IaC%20Scanning-TFLint%20%7C%20tfsec%20%7C%20Checkov-6A5ACD" />
 </p>
 
-A fully automated, production-grade static website for **RD Service
-Pros**, a home repair & appliance service company in **Navarre,
-Florida**.\
-The project demonstrates **end-to-end DevOps engineering**, including
-infrastructure-as-code, CDN-level optimization, secure deployments, and
-real incident resolution.
+I built and operate a fully automated, production-grade static website for **RD Service Pros**, a home repair and appliance service company based in **Navarre, Florida**.
 
-##  Live Demo
+I designed the full infrastructure stack using Terraform and AWS services, including a private S3 origin, CloudFront with Origin Access Control, Route53 DNS, and ACM-managed HTTPS in `us-east-1`. The deployment pipeline runs through GitHub Actions using OIDC, so no long-lived AWS credentials are stored anywhere.
 
- **https://rdservicepros.com**
+This project reflects how I approach real-world infrastructure: infrastructure as code, secure CI/CD, cost-aware architecture decisions, CDN-level performance tuning, and hands-on production troubleshooting — including resolving real DNS propagation and nameserver mismatches in a live environment.
 
-Built using **AWS S3 + CloudFront**, with DNS routed through
-**Route53**, and deployed via **GitHub Actions OIDC** (no access keys).
+## Live Website
+
+🔗 https://rdservicepros.com  
+
+The site runs on a fully automated AWS stack:
+
+- Private **S3** bucket as origin  
+- **CloudFront** with Origin Access Control (OAC)  
+- **Route53** for apex and `www` DNS routing  
+- **ACM** certificate in `us-east-1` for HTTPS  
+- Deployment via **GitHub Actions using OIDC** (no access keys stored anywhere)
+
+All infrastructure is provisioned and managed through Terraform.
 
 ---
 
@@ -299,6 +300,6 @@ It confirms that the apex domain correctly resolves to the CloudFront IPs, provi
 
 ## License
 
-- Released under the **MIT License** — see `LICENSE` for full text.  
-- © Ruslan Dashkin (“🚀 Ruslan AWS”).  
-- Branding name “🚀 Ruslan AWS” and related visuals may not be reused, redistributed, or rebranded without explicit permission.
+This project is released under the MIT License.
+
+See the `LICENSE` file for details.
